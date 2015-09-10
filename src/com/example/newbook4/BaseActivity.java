@@ -17,7 +17,7 @@ public class BaseActivity extends Activity {
 
 	protected BaseInfo baseInfo;
 
-	@Override
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ctx = this;
