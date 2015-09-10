@@ -101,13 +101,13 @@ public class RegisterActivity extends BaseActivity {
 			}
 			super.handleMessage(msg);
 		}
+
 	};
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register);
+		setContentView(R.layout.activity_newregister);
 		setupViewComponent();
 		initData();
 	}

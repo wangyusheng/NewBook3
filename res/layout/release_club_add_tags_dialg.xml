@@ -29,7 +29,6 @@
         android:maxLength="25"
         android:paddingBottom="16dp"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp"
         android:paddingTop="28dp" >
 
         <requestFocus />

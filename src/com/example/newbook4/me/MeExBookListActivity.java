@@ -36,11 +36,7 @@ import com.example.newbook4.tools.VolleyHelper.ErrorResponseCB;
 import com.example.newbook4.tools.VolleyHelper.ResponseCB;
 import com.example.newbook4.wdiget.MyListView;
 import com.example.newbook4.wdiget.MyListView.OnRefreshListener;
-/**
- * 对应服务为 BookBusinessSpecial
- * @author wys
- *
- */
+
 public class MeExBookListActivity extends BaseActivity {
 
 	private static final String TAG = "MeExBookListActivity";
@@ -177,7 +173,7 @@ public class MeExBookListActivity extends BaseActivity {
 
 			handler.sendEmptyMessage(START_RETRIEVAL);
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("action", action);//action retrivalAllMyBook
+			jsonObject.put("action", action);
 			jsonObject.put("bookId", bookId);
 			jsonObject.put("userId", baseInfo.userId);
 			jsonObject.put("type", type);
@@ -292,7 +288,6 @@ public class MeExBookListActivity extends BaseActivity {
 					action = "retrievalMyBeforeTrade";
 				} else if ("交易中".equals(type)) {
 					action = "retrievalMyTrading";
-
 				} else if ("交易完成".equals(type)) {
 					action = "retrievalMyTraded";
 				} else {

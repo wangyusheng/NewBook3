@@ -95,56 +95,16 @@ public class MeFragment extends Fragment {
 				builder.create().show();
 			}
 		});
-		((RelativeLayout) view.findViewById(R.id.layout_exbook))//交换
+		((RelativeLayout) view.findViewById(R.id.layout_exbook))
 				.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent();
-						intent.setClass(ctx, MeExBookListActivity.class);//新活动
+						intent.setClass(ctx, MeExBookListActivity.class);
 						startActivity(intent);
 					}
 				});
-		((RelativeLayout) view.findViewById(R.id.layout_givebook))//赠送
-		.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(ctx, MeExBookListActivity.class);
-				startActivity(intent);
-			}
-		});
-		((RelativeLayout) view.findViewById(R.id.layout_salebook))//出售
-		.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(ctx, MeExBookListActivity.class);
-				startActivity(intent);
-			}
-		});
-		((RelativeLayout) view.findViewById(R.id.layout_collectbook))//收藏
-		.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(ctx, MeExBookListActivity.class);
-				startActivity(intent);
-			}
-		});
-		((RelativeLayout) view.findViewById(R.id.layout_baseInfo))//基本信息
-		.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(ctx, MeExBookListActivity.class);
-				startActivity(intent);
-			}
-		});
 
 	}
 }

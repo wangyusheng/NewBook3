@@ -12,22 +12,22 @@ public class TestActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_test);
+		setContentView(R.layout.activity_newregister);
 
-		initViewComponent();
-
-	}
-
-	private void initViewComponent() {
-		((Button) findViewById(R.id.btn))
-				.setOnClickListener(new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-//						NotificationsHelper.getInstance()
-//								.showIntentActivityNotify("关注通知","有人对你的书感兴趣");
-					}
-				});
+		//initViewComponent();
 
 	}
+
+//	private void initViewComponent() {
+//		((Button) findViewById(R.id.btn))
+//				.setOnClickListener(new View.OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+////						NotificationsHelper.getInstance()
+////								.showIntentActivityNotify("关注通知","有人对你的书感兴趣");
+//					}
+//				});
+//
+//	}
 }

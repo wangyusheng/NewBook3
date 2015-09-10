@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 /**
  * 主界面
@@ -29,8 +28,7 @@ import android.widget.TextView;
  */
 public class LoginActivity extends BaseActivity {
 	private static final String TAG = "LoginActivity";
-	private TextView register_link, register_tv;
-	private Button login_button;
+	private Button login_button, btn_register, btn_findpass;
 	private EditText username_edit, password_edit;
 	private ProgressDialog proDialog;
 
@@ -40,17 +38,25 @@ public class LoginActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
-
+		setContentView(R.layout.activity_newlogin);
 		// 初始化控件
 		initViewComponent();
-		// 默认登陆
+		// // 默认登陆
 		loginDefault();
 	}
 
 	private void initViewComponent() {
-		register_link = (TextView) findViewById(R.id.register_link);
-		register_link.setOnClickListener(new View.OnClickListener() {
+		btn_findpass = (Button) findViewById(R.id.btn_findpass);
+		btn_findpass.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				showToast("找回密码按钮");
+
+			}
+		});
+		btn_register = (Button) findViewById(R.id.btn_register);
+		btn_register.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -82,9 +88,6 @@ public class LoginActivity extends BaseActivity {
 						.mySha1_decrypt(lsPassword));
 			}
 		});
-		register_tv = (TextView) findViewById(R.id.register_tv);
-		register_tv.setTypeface(myApplication.popTypeface);
-		register_tv.setText("书山有路，勤为径！");
 	}
 
 	/**

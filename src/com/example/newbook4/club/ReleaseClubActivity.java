@@ -73,6 +73,7 @@ public class ReleaseClubActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.release_club_layout);
 		initViewComponent();
+
 	}
 
 	private void initViewComponent() {

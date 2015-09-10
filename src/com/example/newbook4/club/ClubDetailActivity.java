@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -24,25 +23,22 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.newbook4.BaseActivity;
 import com.example.newbook4.R;
-
 import com.example.newbook4.bean.ClubBean;
-import com.example.newbook4.book.BookDetailActivity;
-import com.example.newbook4.book.TradeBookExchange;
 import com.example.newbook4.tools.NetUtil;
 import com.example.newbook4.tools.VolleyErrorHelper;
 import com.example.newbook4.tools.VolleyHelper;
 import com.example.newbook4.tools.VolleyHelper.ErrorResponseCB;
 import com.example.newbook4.tools.VolleyHelper.ResponseCB;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
-@SuppressLint("ClickableViewAccessibility")
-public class ClubDetailActivity extends BaseActivity implements View.OnClickListener{
+public class ClubDetailActivity extends BaseActivity implements
+		View.OnClickListener {
 	private static final String TAG = "ClubDetailActivity";
 	private TextView actionbar_tv;
 	private TextView content_tv, content_way;
 	private ClubBean clubBean;
 	private int clubId;
-	
+	private String clubTopic;
+
 	private Button btn_concern, btn_enroll, btn_report;
 	private TextView tv_concern, tv_enroll, tv_report;
 
@@ -64,7 +60,8 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_club_detial);
 		Intent intent = getIntent();
-		clubId = intent.getIntExtra("bookId", -1);
+		clubId = intent.getIntExtra("clubId", -1);
+		clubTopic = intent.getStringExtra("clubTopic");
 		if (clubId <= 0) {
 			finish();
 		} else {
@@ -75,11 +72,14 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	private void setupViewComponent() {
 
 		// 设置加号不可见
 		((Button) findViewById(R.id.actionbar_add)).setVisibility(View.GONE);
 		actionbar_tv = (TextView) findViewById(R.id.actionbar_tv);
+		
+		actionbar_tv.setText(clubTopic);
 
 		((Button) findViewById(R.id.actionbar_back))
 				.setOnClickListener(new OnClickListener() {
@@ -145,8 +145,6 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 			}
 
 		});
-
-		
 
 		btn_report.setOnTouchListener(new OnTouchListener() {
 
@@ -242,20 +240,20 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 			clubBean = null;
 
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("action", "retrievalBookSingle");
-			jsonObject.put("bookId", bookId);
+			jsonObject.put("action", "retrievalClubSingle");
+			jsonObject.put("clubId", clubId);
 
 			Log.d(TAG, "jsonObject=" + jsonObject);
 
 			VolleyHelper.doPost_JSONObject(jsonObject,
-					NetUtil.getBookBusincesAddress(ctx), requestQueue,
+					NetUtil.getClubBusinessAddress(ctx), requestQueue,
 					new ResponseCB() {
 
 						@Override
 						public void callBack(JSONObject response) {
 							// 隐藏对话框
 							dialogHide();
-				//			dealResult(response);
+							dealResult(response);
 						}
 
 					}, new ErrorResponseCB() {
@@ -275,112 +273,100 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 		}
 
 	}
-	
-/*		protected void dealResult(JSONObject response) {
-			try {
-	
-				int errorcode = response.getInt("errorcode");
-				if (errorcode == 0) {
-					JSONObject bookObject = response.getJSONObject("jsonObject");
-					clubBean = new clubBean();
-					clubBean.book_Id = bookObject.getInt("book_id");
-					clubBean.user_Id = bookObject.getInt("user_id");
-					clubBean.book_Name = bookObject.getString("book_name");
-					clubBean.abstract_content = bookObject.getString("abstract");
-					clubBean.time_Release = bookObject.getString("time_release");
-					clubBean.transcation = bookObject.getString("transaction");
-					clubBean.new_Old = bookObject.getString("new_old");
-					clubBean.picture_Path = bookObject.getString("picture");
-					clubBean.priority = bookObject.getInt("priority");
-					clubBean.rating = bookObject.getInt("rating");
-					String generation_time = bookObject
-							.getString("generation_time");
-					String[] temp = generation_time.split("-");
-					clubBean.generation_time = temp[3] + ":" + temp[4] + ":"
-							+ temp[5];
-					clubBean.author_name = bookObject.getString("author_name");
-					clubBean.interest = bookObject.getString("interest");
-					clubBean.state = bookObject.getInt("state");
-					// 加载成功
-					setupLoadSuccess();
-					displayResult();
-					isOk();
-	
-				} else {
-					showToast("errorcode=" + errorcode);
-				}
-			} catch (JSONException e) {
-				Log.d(TAG, e.toString());
-				showToast(e.toString());
+
+	protected void dealResult(JSONObject response) {
+		try {
+
+			int errorcode = response.getInt("errorcode");
+			if (errorcode == 0) {
+				JSONObject clubObject = response.getJSONObject("jsonObject");
+				clubBean = new ClubBean();
+				clubBean.club_id = clubObject.getInt("club_id");
+				clubBean.user_id = clubObject.getInt("user_id");
+
+				clubBean.topic = clubObject.getString("topic");
+				clubBean.recommend_book = clubObject
+						.getString("recommend_book");
+				clubBean.time = clubObject.getString("time");
+				clubBean.address = clubObject.getString("address");
+				clubBean.enroll_num = clubObject.getInt("enroll_num");
+				clubBean.concern_num = clubObject.getInt("concern_num");
+
+				clubBean.accusation_num = clubObject.getInt("accusation_num");
+				clubBean.generate_time = clubObject.getString("generate_time");
+				// 加载成功
+				setupLoadSuccess();
+				displayResult();
+				isOk();
+
+			} else {
+				showToast("errorcode=" + errorcode);
 			}
-	
+		} catch (JSONException e) {
+			Log.d(TAG, e.toString());
+			showToast(e.toString());
 		}
-*/	
-		/**
-		 * 显示结果
-		 */
-/*		private void displayResult() {
-			StringBuilder sb = new StringBuilder();
-			sb.append("发布者ID：" + clubBean.user_Id + "\n");
-			sb.append("发布时间：" + clubBean.generation_time + "\n");
-			sb.append("新旧程度：" + clubBean.new_Old + "\n");
-			sb.append("书籍类别：" + clubBean.interest + "\n");
-			sb.append("出版年限：" + clubBean.time_Release);
-			content_infos.setText(sb.toString());
-	
-			content_way.append(clubBean.transcation);
-			actionbar_tv.setText(clubBean.book_Name);
-			content.setText(clubBean.abstract_content);
-	
-			ImageLoader.getInstance().displayImage(
-					NetUtil.getBookUpLoadAddress(ctx) + clubBean.picture_Path,
-					imageView);
-	
-			// 评论数量
-			// comment_num = (TextView) findViewById(R.id.comment_num);
-			// comment_num.setTypeface(type);
-			// comment_num.setText("123");
+
+	}
+
+	/**
+	 * 显示结果
+	 */
+	private void displayResult() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("举行时间：" + clubBean.time + "\n");
+		sb.append("发布时间：" + clubBean.generate_time + "\n");
+		sb.append("联系方式：" + clubBean.address + "\n");
+		sb.append("推荐书籍：" + clubBean.recommend_book + "\n");
+		sb.append("发布者：" + clubBean.user_id);
+
+		content_way.setText(sb.toString());
+		actionbar_tv.setText(clubBean.topic);
+
+		content_tv.setText(clubBean.enroll_num + "," + clubBean.concern_num
+				+ "," + clubBean.accusation_num);
+
+		// 评论数量
+		// comment_num = (TextView) findViewById(R.id.comment_num);
+		// comment_num.setTypeface(type);
+		// comment_num.setText("123");
+	}
+
+	private void isOk() {
+		// 时间 是否过了
+		// TODO
+		// if (bookBean.state != 0) {
+		// actionbar_tv.setText(bookBean.book_Name + "(人数已满)");
+		// showToast("不好意思，这本书籍预定人数已满！");
+		// bookBean = null;
+		// isAvailable = false;
+		// }
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (clubBean == null) {
+			return;
 		}
-	
-		private void isOk() {
-			if (clubBean.state != 0) {
-				actionbar_tv.setText(clubBean.book_Name + "(人数已满)");
-				showToast("不好意思，这本书籍预定人数已满！");
-				clubBean = null;
-				isAvailable = false;
-			}
+		switch (v.getId()) {
+		case R.id.btn_concern:
+			showToast("关注");
+			break;
+		case R.id.btn_enroll:
+			showToast("参加");
+			break;
+		case R.id.btn_report:
+			showDialog(1);
+			break;
+
 		}
-	
-		@Override
-		public void onClick(View v) {
-			if (clubBean == null) {
-				return;
-			}
-			switch (v.getId()) {
-			case R.id.btn_ask:
-				if (clubBean.user_Id == baseInfo.userId) {
-					showToast("该书是你自己发布的");
-					return;
-				}
-				getBook();
-				break;
-			case R.id.btn_comment:
-				showToast("评论功能");
-				break;
-			case R.id.btn_collect:
-				showToast("收藏功能");
-				break;
-			case R.id.btn_report:
-				showDialog(1);
-				break;
-			}
-	
-		}
-*/
+
+	}
+
 	/**
 	 * 举报
 	 */
-/*	private void reportBadInfo() {
+	private void reportBadInfo() {
 		int len = info_type.length;
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < len; i++) {
@@ -393,38 +379,6 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 			return;
 		}
 		showToast(result);
-	}
-*/
-	/**
-	 * 获得图书
-	 */
-/*	protected void getBook() {
-		Intent intent = new Intent();
-		if ("交换".equals(clubBean.transcation)) {
-			// 这个最复杂 先弄
-			intent.setClass(ctx, TradeBookExchange.class);
-			intent.putExtra("clubBean", clubBean);
-			// if(clubBean==null){
-			// showToast("clubBean==null");
-			// }else{
-			// showToast("clubBean!=null");
-			// }
-			startActivityForResult(intent, 0);
-
-		} else if ("赠送".equals(clubBean.transcation)) {
-			showToast("还未完成");
-			// mTabIndicator.get(1).setIconAlpha(0f);
-			// 选择联系地址
-			// intent.setClass(ctx, TradeBookAddress.class);
-			// intent.putExtra("clubBean", clubBean);
-			// startActivity(intent);
-
-		} else if ("出售".equals(clubBean.transcation)) {
-			// 这个显示出售人的联系方式
-			showToast("还未完成");
-			// mTabIndicator.get(2).setIconAlpha(0f);
-		}
-
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -456,7 +410,7 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 			}
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(
-					BookDetailActivity.this);
+					ClubDetailActivity.this);
 			builder.setIcon(R.drawable.report);
 			builder.setTitle("举报");
 
@@ -486,7 +440,7 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 		}
 		return super.onCreateDialog(id);
 	}
-*/
+
 	/**
 	 * 显示对话框
 	 */
@@ -543,15 +497,8 @@ public class ClubDetailActivity extends BaseActivity implements View.OnClickList
 				this.setResult(RESULT_CANCELED);
 			}
 			this.finish();
-
 		}
 		return super.onKeyDown(keyCode, event);
 
-	}
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
 	}
 }

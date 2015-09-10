@@ -307,7 +307,7 @@ public class TradeBookExchange extends Activity {
 		handler.sendEmptyMessage(START_RETRIEVAL);
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("action", "retrievalBook-user");//BookBusiness 
+		map.put("action", "retrievalBook-user");
 		map.put("bookId", bookId + "");
 		map.put("type", type + "");
 		map.put("userId", baseInfo.userId + "");
@@ -382,7 +382,7 @@ public class TradeBookExchange extends Activity {
 						bookBean.time_Release = bookObject
 								.getString("time_release");
 						bookBean.transcation = bookObject
-								.getString("trans");
+								.getString("transaction");
 						bookBean.new_Old = bookObject.getString("new_old");
 						bookBean.picture_Path = bookObject.getString("picture");
 						bookBean.priority = bookObject.getInt("priority");

@@ -26,12 +26,6 @@ public class NetUtil {
 	public static String getBookExchangeAddress(Context ctx) {
 		return getRootAddress(ctx) + "bookExchange";
 	}
-	public static String getBookGiveAddress(Context ctx) {
-		return getRootAddress(ctx) + "bookGive";
-	}
-	public static String getBookSaleAddress(Context ctx) {
-		return getRootAddress(ctx) + "bookSale";
-	}
 
 	public static String getBookBusinessSpecial(Context ctx) {
 		return getRootAddress(ctx) + "bookBusinessSpecial";
@@ -56,11 +50,4 @@ public class NetUtil {
 	public static String getClubBusinessAddress(Context ctx) {
 		return getRootAddress(ctx) + "clubBusiness";
 	}
-	public static String getInfobuyBusinessAddress(Context ctx){
-		return getRootAddress(ctx)+"infoBusiness";
-	}
-	public static String getPosterBusinessAddress(Context ctx){
-		return getRootAddress(ctx)+"posterBusiness";
-	}
-	
 }

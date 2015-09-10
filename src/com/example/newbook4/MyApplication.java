@@ -61,7 +61,7 @@ public class MyApplication extends Application {
 		if (TextUtils.isEmpty(SharedPreferencesTool.readStringValue(this,
 				KeyConstant.ip_Address))) {
 			SharedPreferencesTool.writeStringValue(this,
-					KeyConstant.ip_Address, "219.223.233.12");//219.223.238.80
+					KeyConstant.ip_Address, "219.223.238.80");
 		}
 
 	}

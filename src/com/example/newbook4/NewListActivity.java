@@ -3,8 +3,6 @@ package com.example.newbook4;
 import com.example.newbook4.book.ReleaseBookActivity;
 import com.example.newbook4.book.ReleaseBookSale;
 import com.example.newbook4.club.ReleaseClubActivity;
-import com.example.newbook4.info.ReleaseInfo_buyActivity;
-import com.example.newbook4.info.ReleasePosterActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 
 public class NewListActivity extends Activity {
-	private static final String TAG="NewListActivity";
 	private Context ctx;
 
 	@Override
@@ -54,27 +51,21 @@ public class NewListActivity extends Activity {
 					}
 				});
 
-		((Button) findViewById(R.id.btn_poster))//海报
+		((Button) findViewById(R.id.btn_poster))
 				.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						Intent intent = new Intent();
-						intent.setClass(ctx, ReleasePosterActivity.class);
-						startActivity(intent);
-						finish();
+
 					}
 				});
 
-		((Button) findViewById(R.id.btn_info))//信息
+		((Button) findViewById(R.id.btn_info))
 				.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						Intent intent = new Intent();
-						intent.setClass(ctx, ReleaseInfo_buyActivity.class);
-						startActivity(intent);
-						finish();
+
 					}
 				});
 
@@ -98,8 +89,7 @@ public class NewListActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent();
-						intent.setClass(ctx, ReleaseBookActivity.class);//ReleaseBookSale
-						intent.putExtra("type", 2);//
+						intent.setClass(ctx, ReleaseBookSale.class);
 						startActivity(intent);
 						finish();
 					}

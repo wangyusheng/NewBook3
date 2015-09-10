@@ -57,8 +57,7 @@
         android:allowBackup="true"
         android:icon="@drawable/book_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
-       >
+        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -70,33 +69,28 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".NewListActivity" />
-        <activity android:name=".RegisterActivity" />      
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".book.BookDetailActivity" />
         <activity android:name=".book.BookSimpleDetialActivity" />
         <activity android:name=".book.TradeBookExchange" />
         <activity android:name=".book.TradeBookAddress" />
-        <activity android:name=".book.TradeBookGive" />
-        <activity android:name=".book.TradeBookSale" />        
         <activity android:name=".book.ReleaseBookSale" />
         <activity android:name=".book.ReleaseBookActivity" />
+        <activity android:name=".me.MeExBookListActivity" />
+        <activity android:name=".me.MeBookActivity" />
+        <activity android:name=".me.MeBookDetail" />
+        <activity android:name=".me.MeExBookInfosActivity" />
+        <activity android:name=".me.MeBookInfoDetialActivity" />
+        <activity android:name=".me.MeBookExhangeChooseAddress" />
         <activity android:name=".me.AddAddressActivity" />
         <activity android:name=".me.BookExchangeOrderDetial" />
         <activity android:name=".me.BookExchangeOrderFinish" />
-        <activity android:name=".me.BookGiveOrderDetail" />
-        <activity android:name=".me.BookGiveOrderFinish" />
-        <activity android:name=".me.MeBookActivity" />
-        <activity android:name=".me.MeBookDetail" />
-        <activity android:name=".me.MeBookExhangeChooseAddress" />
-        <activity android:name=".me.MeBookInfoDetialActivity" />
-        <activity android:name=".me.MeExBookListActivity" />       
-        <activity android:name=".me.MeExBookInfosActivity" />                
-        <activity android:name=".me.MeGiveBookInfosActivity" />
-        <activity android:name=".me.MeGiveBookListActivity" />
         <activity android:name=".club.ReleaseClubActivity" />
         <activity android:name=".club.ClubDetailActivity" />
-        <activity android:name=".info.ReleaseInfo_buyActivity" /> 
-        <activity android:name=".info.ReleasePosterActivity" /> 
- 
+        
+        
+        <activity android:name=".citys.CityActivity" />
+
         <service
             android:name="com.yuntongxun.ecsdk.ECClientService"
             android:enabled="true"

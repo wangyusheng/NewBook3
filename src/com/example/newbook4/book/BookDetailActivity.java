@@ -107,10 +107,10 @@ public class BookDetailActivity extends BaseActivity implements OnClickListener 
 		tv_collect = (TextView) findViewById(R.id.tv_collect);
 		tv_report = (TextView) findViewById(R.id.tv_report);
 
-		btn_ask = (Button) findViewById(R.id.btn_ask);//获得
-		btn_comment = (Button) findViewById(R.id.btn_comment);//评论
-		btn_collect = (Button) findViewById(R.id.btn_collect);//收藏
-		btn_report = (Button) findViewById(R.id.btn_report);//举报
+		btn_ask = (Button) findViewById(R.id.btn_ask);
+		btn_comment = (Button) findViewById(R.id.btn_comment);
+		btn_collect = (Button) findViewById(R.id.btn_collect);
+		btn_report = (Button) findViewById(R.id.btn_report);
 
 		btn_ask.setOnTouchListener(new OnTouchListener() {
 
@@ -435,12 +435,15 @@ public class BookDetailActivity extends BaseActivity implements OnClickListener 
 			// 这个最复杂 先弄
 			intent.setClass(ctx, TradeBookExchange.class);
 			intent.putExtra("BookBean", bookBean);
+			// if(bookBean==null){
+			// showToast("bookBean==null");
+			// }else{
+			// showToast("bookBean!=null");
+			// }
 			startActivityForResult(intent, 0);
 
 		} else if ("赠送".equals(bookBean.transcation)) {
-			intent.setClass(ctx, TradeBookGive.class);
-			intent.putExtra("BookBean", bookBean);
-			//showToast("还未完成");
+			showToast("还未完成");
 			// mTabIndicator.get(1).setIconAlpha(0f);
 			// 选择联系地址
 			// intent.setClass(ctx, TradeBookAddress.class);
@@ -448,10 +451,8 @@ public class BookDetailActivity extends BaseActivity implements OnClickListener 
 			// startActivity(intent);
 
 		} else if ("出售".equals(bookBean.transcation)) {
-			intent.setClass(ctx, TradeBookSale.class);
-			intent.putExtra("BookBean", bookBean);
 			// 这个显示出售人的联系方式
-			//showToast("还未完成");
+			showToast("还未完成");
 			// mTabIndicator.get(2).setIconAlpha(0f);
 		}
 

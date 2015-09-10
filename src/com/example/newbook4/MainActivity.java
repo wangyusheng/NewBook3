@@ -61,7 +61,7 @@ public class MainActivity extends FragmentActivity implements
 	/**
 	 * 信息
 	 */
-	private InfobuyFragment infoFragment;
+	private InfoFragment infoFragment;
 	/**
 	 * 我
 	 */
@@ -90,9 +90,7 @@ public class MainActivity extends FragmentActivity implements
 	private MyApplication myApplication;
 
 	private Context ctx;
-	/**
-	 * 发布按钮
-	 */
+	
 	private Button btn_add;
 
 	@Override
@@ -347,7 +345,7 @@ public class MainActivity extends FragmentActivity implements
 				return clubFragment;
 			case 2:
 				if (infoFragment == null) {
-					infoFragment = new InfobuyFragment();
+					infoFragment = new InfoFragment();
 				}
 				return infoFragment;
 			case 3:

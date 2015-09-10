@@ -2,9 +2,11 @@ package com.example.newbook4;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
@@ -13,6 +15,7 @@ import com.example.newbook4.adapter.SubjectListAdapter;
 import com.example.newbook4.bean.BookBean;
 import com.example.newbook4.bean.ClubBean;
 import com.example.newbook4.book.BookDetailActivity;
+import com.example.newbook4.club.ClubDetailActivity;
 import com.example.newbook4.tools.NetUtil;
 import com.example.newbook4.tools.VolleyErrorHelper;
 import com.example.newbook4.tools.VolleyHelper;
@@ -20,7 +23,9 @@ import com.example.newbook4.tools.VolleyHelper.ErrorResponseCB;
 import com.example.newbook4.tools.VolleyHelper.ResponseCB;
 import com.example.newbook4.wdiget.MyListView;
 import com.example.newbook4.wdiget.MyListView.OnRefreshListener;
+
 import android.support.v4.app.Fragment;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +67,7 @@ public class ClubFragment extends Fragment {
 
 	private int clickedPost;
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -106,14 +112,14 @@ public class ClubFragment extends Fragment {
 			// 详细信息
 
 			showToast("点击了");
-			// BookBean bookBean = (BookBean) parent.getAdapter()
-			// .getItem(position);
-			// clickedPost = position;
-			// Intent intent = new Intent();
-			// intent.setClass(ctx, BookDetailActivity.class);
-			// intent.putExtra("bookId", bookBean.book_Id);
-			// intent.putExtra("bookName", bookBean.book_Name);
-			// startActivityForResult(intent, 1);
+			ClubBean clubBean = (ClubBean) parent.getAdapter()
+					.getItem(position);
+			clickedPost = position;
+			Intent intent = new Intent();
+			intent.setClass(ctx, ClubDetailActivity.class);
+			intent.putExtra("clubId", clubBean.club_id);
+			intent.putExtra("clubTopic", clubBean.topic);
+			startActivityForResult(intent, 1);
 		}
 
 	};
@@ -288,6 +294,7 @@ public class ClubFragment extends Fragment {
 					Log.d(TAG, "bookArray=" + clubArray);
 					int len = clubArray.length();
 					for (int i = 0; i < len; i++) {
+
 						
 						JSONObject clubObject = clubArray.getJSONObject(i);
 						ClubBean clubBean = new ClubBean();

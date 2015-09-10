@@ -75,7 +75,7 @@ public class ReleaseBookActivity extends Activity {
 
 	private int type;
 
-	private static final String[] TYPE = { "交换", "赠送","出售" };
+	private static final String[] TYPE = { "交换", "赠送" };
 
 	private static final String TAG = "ReleaseBookActivity";
 	private ImageView img_content;
@@ -141,7 +141,7 @@ public class ReleaseBookActivity extends Activity {
 		if (type == -1) {
 			finish();
 		}
-		if (type != 0 && type != 1 && type!=2) {
+		if (type != 0 && type != 1) {
 			finish();
 		}
 		initViews();
@@ -396,7 +396,7 @@ public class ReleaseBookActivity extends Activity {
 		map.put("fileContent",
 				PictureUtil.bitmapToString(pictureFile.getAbsolutePath()));
 
-		JSONObject jsonObject = new JSONObject(map);//通信
+		JSONObject jsonObject = new JSONObject(map);
 		Log.d(TAG, jsonObject.toString());
 		JsonRequest<JSONObject> jsonRequest = new JsonObjectRequest(
 				Method.POST, getAddress(), jsonObject,
