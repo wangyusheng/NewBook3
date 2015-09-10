@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/air" >
+
+    <RelativeLayout
+        android:id="@+id/login_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <EditText
+            android:id="@+id/username_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/qq_edit_login"
+            android:inputType="textVisiblePassword"
+            android:maxLength="15"
+            android:paddingLeft="45dp"
+            android:saveEnabled="true" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@id/username_edit"
+            android:layout_alignLeft="@id/username_edit"
+            android:layout_alignTop="@id/username_edit"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="7.0dp"
+            android:text="账号"
+            android:textColor="#ff3f3f3f"
+            android:textSize="16.0dp" />
+
+        <EditText
+            android:id="@+id/password_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/username_edit"
+            android:layout_alignRight="@+id/username_edit"
+            android:layout_below="@+id/username_edit"
+            android:layout_marginRight="1.0dp"
+            android:background="@drawable/qq_edit_login"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:paddingLeft="45.0dp"
+            android:saveEnabled="true" />
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/password_edit"
+            android:layout_alignRight="@+id/TextView01"
+            android:layout_alignTop="@+id/password_edit"
+            android:gravity="center_vertical"
+            android:paddingLeft="7.0dp"
+            android:text="密码"
+            android:textColor="#ff3f3f3f"
+            android:textSize="16.0dp" />
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password_edit"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_orange"
+            android:text="登录"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/register_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_above="@id/login_view"
+        android:text="书山有路，勤为径！"
+        android:textColor="@color/orange"
+        android:layout_marginBottom="20dp"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/register_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/textview_style"
+        android:clickable="true"
+        android:text="@string/login_register_link"
+        android:textColor="#888"
+        android:textColorLink="#FF0066CC" />
+
+</RelativeLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/tabbg"
+    android:baselineAligned="false" >
+
+    <RelativeLayout
+        android:id="@+id/rlshopping"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/btnshopping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shopping_u"
+            android:contentDescription="@null"
+            android:scaleType="center" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlcomment"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/btncomment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/comment_u"
+            android:contentDescription="@null"
+            android:scaleType="center" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlcollect"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/btncollect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/collect_u"
+            android:contentDescription="@null"
+            android:scaleType="center" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlreport"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/btnreport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/report_u"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter" />
+    </RelativeLayout>
+
+</LinearLayout>
