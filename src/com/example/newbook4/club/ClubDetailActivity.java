@@ -3,6 +3,7 @@ package com.example.newbook4.club;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,7 +68,12 @@ public class ClubDetailActivity extends BaseActivity implements
 	private boolean isAvailable = true;
 
 	private LinearLayout tag_vessel;
-	private List<String> mTagList = new ArrayList<String>();
+	private LinearLayout tag_vessel2;
+	private LinearLayout layout_btn;
+	/**
+	 * 是否显示下面的按钮
+	 */
+	private int sign = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +82,17 @@ public class ClubDetailActivity extends BaseActivity implements
 		Intent intent = getIntent();
 		clubId = intent.getIntExtra("clubId", -1);
 		clubTopic = intent.getStringExtra("clubTopic");
+		sign = intent.getIntExtra("sign", -1);
 		if (clubId <= 0) {
 			finish();
 		} else {
-			setupViewComponent();
-			// 加载数据
-			loadData(clubId);
+			if (sign == 1 || sign == 2) {
+				setupViewComponent();
+				// 加载数据
+				loadData(clubId, true, true);
+			} else {
+				finish();
+			}
 		}
 
 	}
@@ -90,6 +101,13 @@ public class ClubDetailActivity extends BaseActivity implements
 	private void setupViewComponent() {
 
 		tag_vessel = (LinearLayout) findViewById(R.id.tag_vessel);
+		tag_vessel2 = (LinearLayout) findViewById(R.id.tag_vessel2);
+		layout_btn = (LinearLayout) findViewById(R.id.layout_btn);
+		if (sign == 1) {
+			layout_btn.setVisibility(View.VISIBLE);
+		} else if (sign == 2) {
+			layout_btn.setVisibility(View.GONE);
+		}
 
 		// 设置加号不可见
 		((Button) findViewById(R.id.actionbar_add)).setVisibility(View.GONE);
@@ -194,7 +212,7 @@ public class ClubDetailActivity extends BaseActivity implements
 			@Override
 			public void onClick(View v) {
 				// 加载数据
-				loadData(clubId);
+				loadData(clubId, true, true);
 			}
 		});
 
@@ -248,8 +266,12 @@ public class ClubDetailActivity extends BaseActivity implements
 
 	/**
 	 * 加载数据
+	 * 
+	 * @param enroll
+	 * @param isFirst
 	 */
-	private void loadData(int bookId) {
+	private void loadData(int bookId, final boolean isFirst,
+			final boolean enroll) {
 		Log.d(TAG, "loadData");
 		try {
 			// 显示对话框
@@ -270,7 +292,7 @@ public class ClubDetailActivity extends BaseActivity implements
 						public void callBack(JSONObject response) {
 							// 隐藏对话框
 							dialogHide();
-							dealResult(response);
+							dealResult(response, isFirst, enroll);
 						}
 
 					}, new ErrorResponseCB() {
@@ -291,7 +313,8 @@ public class ClubDetailActivity extends BaseActivity implements
 
 	}
 
-	protected void dealResult(JSONObject response) {
+	protected void dealResult(JSONObject response, boolean isFirst,
+			boolean enroll) {
 		try {
 
 			int errorcode = response.getInt("errorcode");
@@ -313,7 +336,7 @@ public class ClubDetailActivity extends BaseActivity implements
 				clubBean.generate_time = clubObject.getString("generate_time");
 				// 加载成功
 				setupLoadSuccess();
-				displayResult();
+				displayResult(isFirst, enroll);
 				isOk();
 
 			} else {
@@ -328,32 +351,94 @@ public class ClubDetailActivity extends BaseActivity implements
 
 	/**
 	 * 显示结果
+	 * 
+	 * @param enroll
+	 * @param isFirst
 	 */
-	private void displayResult() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("举行时间：" + clubBean.time + "\n");
-		sb.append("发布时间：" + clubBean.getTime() + "\n");
-		sb.append("举行地址:" + clubBean.getAddress1() + clubBean.getAddress2()
-				+ "\n");
-		sb.append("联系人：" + clubBean.getContact() + "\n");
-		sb.append("联系电话：" + clubBean.getPhone() + "\n");
-		sb.append("发布者：" + clubBean.user_id);
-		ArrayList<String> books = clubBean.getAllBooks();
-		for (String book : books) {
-			mTagList.add(book);
-			AddTag(book, mTagList.size() - 1);
+	private void displayResult(boolean isFirst, boolean enroll) {
+		if (isFirst) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("举行时间：" + clubBean.time + "\n");
+			sb.append("发布时间：" + clubBean.getTime() + "\n");
+			sb.append("举行地址:" + clubBean.getAddress1() + clubBean.getAddress2()
+					+ "\n");
+			sb.append("联系人：" + clubBean.getContact() + "\n");
+			sb.append("联系电话：" + clubBean.getPhone() + "\n");
+			sb.append("发布者：" + clubBean.user_id);
+			ArrayList<String> books = clubBean.getAllBooks();
+			for (String book : books) {
+				AddTag(tag_vessel, book, R.drawable.mylable);
+			}
+			content_way.setText(sb.toString());
+			actionbar_tv.setText(clubBean.topic);
+			tv_enrollnum.setText(clubBean.enroll_num + "");
+			tv_concernnum.setText(clubBean.concern_num + "");
+			// 加载参与人数
+			loadEnrolled();
+
+		} else {
+			if (enroll) {
+				tv_enrollnum.setText(clubBean.enroll_num + "");
+				// 加载参与人数
+				loadEnrolled();
+			} else {
+				tv_concernnum.setText(clubBean.concern_num + "");
+			}
 		}
 
-		content_way.setText(sb.toString());
-		actionbar_tv.setText(clubBean.topic);
+	}
 
-		tv_enrollnum.setText(clubBean.enroll_num + "");
-		tv_concernnum.setText(clubBean.concern_num + "");
+	private void loadEnrolled() {
+		try {
 
-		// 评论数量
-		// comment_num = (TextView) findViewById(R.id.comment_num);
-		// comment_num.setTypeface(type);
-		// comment_num.setText("123");
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("action", "retrievalEnrolled");
+			jsonObject.put("clubId", clubId);
+
+			Log.d(TAG, "jsonObject=" + jsonObject);
+
+			VolleyHelper.doPost_JSONObject(jsonObject,
+					NetUtil.getClubBusinessAddress(ctx), requestQueue,
+					new ResponseCB() {
+
+						@Override
+						public void callBack(JSONObject response) {
+							doLoadEnrolled(response);
+						}
+
+					}, new ErrorResponseCB() {
+
+						@Override
+						public void callBack(VolleyError error) {
+							showToast(VolleyErrorHelper.getMessage(error, ctx));
+						}
+
+					});
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	protected void doLoadEnrolled(JSONObject response) {
+		try {
+
+			int errorcode = response.getInt("errorcode");
+			if (errorcode == 0) {
+				JSONArray jsonArray = response.getJSONArray("jsonArray");
+				for (int i = 0, len = jsonArray.length(); i < len; i++) {
+					AddTag(tag_vessel2, jsonArray.get(i) + "",
+							R.drawable.personlable);
+				}
+
+			} else {
+				showToast("errorcode=" + errorcode);
+			}
+		} catch (JSONException e) {
+			Log.d(TAG, e.toString());
+			showToast(e.toString());
+		}
 	}
 
 	/**
@@ -363,18 +448,17 @@ public class ClubDetailActivity extends BaseActivity implements
 	 * @param i
 	 */
 	@SuppressLint("NewApi")
-	public void AddTag(String tag, int i) {
+	public void AddTag(LinearLayout layout, String tag, int rId) {
 		final TextView mTag = new TextView(ctx);
 		mTag.setText("  " + tag + "   ");
 		mTag.setGravity(Gravity.CENTER);
 		mTag.setTextSize(20);
-		mTag.setBackgroundDrawable(getResources().getDrawable(
-				R.drawable.mylable));
+		mTag.setBackgroundDrawable(getResources().getDrawable(rId));
 		mTag.setTextColor(Color.GRAY);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		params.setMargins(0, 10, 20, 10);
-		tag_vessel.addView(mTag, i, params);
+		layout.addView(mTag, layout.getChildCount(), params);
 
 	}
 
@@ -391,15 +475,17 @@ public class ClubDetailActivity extends BaseActivity implements
 
 	@Override
 	public void onClick(View v) {
+		Log.d(TAG, "onClick");
 		if (clubBean == null) {
+			Log.d(TAG, "onClick clubBean=null");
 			return;
 		}
 		switch (v.getId()) {
 		case R.id.btn_concern:
-			showToast("关注");
+			doConcern();
 			break;
 		case R.id.btn_enroll:
-			showToast("参加");
+			doEnroll();
 			break;
 		case R.id.btn_report:
 			showDialog(1);
@@ -407,6 +493,121 @@ public class ClubDetailActivity extends BaseActivity implements
 
 		}
 
+	}
+
+	/**
+	 * 参与
+	 */
+	private void doEnroll() {
+		try {
+
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("action", "enrollClub");
+			jsonObject.put("clubId", clubId);
+			jsonObject.put("userId", baseInfo.userId);
+
+			Log.d(TAG, "jsonObject=" + jsonObject);
+
+			VolleyHelper.doPost_JSONObject(jsonObject,
+					NetUtil.getClubBusinessAddress(ctx), requestQueue,
+					new ResponseCB() {
+
+						@Override
+						public void callBack(JSONObject response) {
+							doEnrollResult(response);
+						}
+
+					}, new ErrorResponseCB() {
+
+						@Override
+						public void callBack(VolleyError error) {
+							showToast(VolleyErrorHelper.getMessage(error, ctx));
+						}
+
+					});
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	protected void doEnrollResult(JSONObject response) {
+		try {
+
+			int errorcode = response.getInt("errorcode");
+			if (errorcode == 0) {
+				showToast("报名成功！");
+				// 刷新数据
+				refreshData(true);
+
+			} else if (errorcode == 6) {
+				showToast("你已经报名了该俱乐部，请勿重复报名！");
+			} else if (errorcode == 8) {
+				showToast("数据库插入错误");
+			} else {
+				showToast("errorcode=" + errorcode);
+			}
+		} catch (JSONException e) {
+			Log.d(TAG, e.toString());
+			showToast(e.toString());
+		}
+	}
+
+	/**
+	 * 关注
+	 */
+	private void doConcern() {
+		Log.d(TAG, "doConcern");
+		try {
+
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("action", "concernClub");
+			jsonObject.put("clubId", clubId);
+
+			Log.d(TAG, "jsonObject=" + jsonObject);
+
+			VolleyHelper.doPost_JSONObject(jsonObject,
+					NetUtil.getClubBusinessAddress(ctx), requestQueue,
+					new ResponseCB() {
+
+						@Override
+						public void callBack(JSONObject response) {
+							doConcernResult(response);
+						}
+
+					}, new ErrorResponseCB() {
+
+						@Override
+						public void callBack(VolleyError error) {
+							showToast(VolleyErrorHelper.getMessage(error, ctx));
+						}
+
+					});
+
+		} catch (JSONException e) {
+			Log.d(TAG, "doConcern:" + e.toString());
+		}
+	}
+
+	protected void doConcernResult(JSONObject response) {
+		Log.d(TAG, "doConcernResult:" + response.toString());
+		try {
+
+			int errorcode = response.getInt("errorcode");
+			if (errorcode == 0) {
+				showToast("关注成功！");
+				// 刷新数据
+				refreshData(false);
+
+			} else if (errorcode == 8) {
+				showToast("数据库插入错误");
+			} else {
+				showToast("errorcode=" + errorcode);
+			}
+		} catch (JSONException e) {
+			Log.d(TAG, e.toString());
+		}
 	}
 
 	/**
@@ -545,6 +746,14 @@ public class ClubDetailActivity extends BaseActivity implements
 			this.finish();
 		}
 		return super.onKeyDown(keyCode, event);
+
+	}
+
+	/**
+	 * 刷新数据 sign false 关注 true 参与
+	 */
+	private void refreshData(boolean sign) {
+		loadData(clubId, false, sign);
 
 	}
 }

@@ -1,5 +1,6 @@
 package com.example.newbook4;
 
+import com.example.newbook4.club.ClubListActivity;
 import com.example.newbook4.me.MeExBookListActivity;
 import com.example.newbook4.tools.KeyConstant;
 import com.example.newbook4.tools.SharedPreferencesTool;
@@ -95,6 +96,7 @@ public class MeFragment extends Fragment {
 				builder.create().show();
 			}
 		});
+		// 图书--交换
 		((RelativeLayout) view.findViewById(R.id.layout_exbook))
 				.setOnClickListener(new View.OnClickListener() {
 
@@ -106,5 +108,30 @@ public class MeFragment extends Fragment {
 					}
 				});
 
+		// 俱乐部--发布
+
+		((RelativeLayout) view.findViewById(R.id.layout_meclub))
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent();
+						intent.putExtra("sign", 1);
+						intent.setClass(ctx, ClubListActivity.class);
+						startActivity(intent);
+					}
+				});
+		// 俱乐部--收藏
+		((RelativeLayout) view.findViewById(R.id.layout_enrollclub))
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent();
+						intent.putExtra("sign", 2);
+						intent.setClass(ctx, ClubListActivity.class);
+						startActivity(intent);
+					}
+				});
 	}
 }

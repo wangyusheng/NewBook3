@@ -100,12 +100,19 @@
                     android:textSize="15sp" />
 
                 <TextView
-                   android:id="@+id/tv_concernnum"
+                    android:id="@+id/tv_concernnum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tag_vessel2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -135,9 +142,11 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/layout_btn"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:background="@drawable/tabbg"
+        android:baselineAligned="false"
         android:orientation="horizontal" >
 
         <RelativeLayout

@@ -1,4 +1,4 @@
-package com.example.newbook4;
+package com.example.newbook4.club;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,12 +10,11 @@ import org.json.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.example.newbook4.BaseActivity;
+import com.example.newbook4.ClubFragment;
+import com.example.newbook4.R;
 import com.example.newbook4.adapter.ClubListAdapter;
-import com.example.newbook4.adapter.SubjectListAdapter;
-import com.example.newbook4.bean.BookBean;
 import com.example.newbook4.bean.ClubBean;
-import com.example.newbook4.book.BookDetailActivity;
-import com.example.newbook4.club.ClubDetailActivity;
 import com.example.newbook4.tools.NetUtil;
 import com.example.newbook4.tools.VolleyErrorHelper;
 import com.example.newbook4.tools.VolleyHelper;
@@ -24,7 +23,6 @@ import com.example.newbook4.tools.VolleyHelper.ResponseCB;
 import com.example.newbook4.wdiget.MyListView;
 import com.example.newbook4.wdiget.MyListView.OnRefreshListener;
 
-import android.support.v4.app.Fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -35,15 +33,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ClubFragment extends Fragment {
+public class ClubListActivity extends BaseActivity {
+
 	private static final String TAG = ClubFragment.class.getName();
-	private View view;
-	private Context ctx;
-	private RequestQueue requestQueue = null;
 	/**
 	 * listView对象
 	 */
@@ -67,25 +65,24 @@ public class ClubFragment extends Fragment {
 
 	private int clickedPost;
 
-	@SuppressLint("InflateParams")
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		view = LayoutInflater.from(getActivity()).inflate(
-				R.layout.fragment_club, null);
+	private int intSign = -1;
 
-		return view;
-	}
+	private boolean isFirst = true;
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		ctx = getActivity();
-		initViewComponent();
-		initData();
-		requestQueue = Volley.newRequestQueue(ctx);
-		// 第一次加载数据
-		initListView();
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_clublist);
+		intSign = getIntent().getIntExtra("sign", -1);
+		if (intSign == 1 || intSign == 2) {
+			initViewComponent();
+			initData();
+			// 第一次加载数据
+			initListView();
+		} else {
+			finish();
+		}
+
 	}
 
 	private void initData() {
@@ -96,9 +93,30 @@ public class ClubFragment extends Fragment {
 	}
 
 	private void initViewComponent() {
-		listview = (MyListView) view.findViewById(R.id.listView);
-		ll_loading = (LinearLayout) view.findViewById(R.id.ll_main_progress);
+		listview = (MyListView) findViewById(R.id.listView);
+		ll_loading = (LinearLayout) findViewById(R.id.ll_main_progress);
 		listview.setOnItemClickListener(onItemClickListener);
+
+		((Button) findViewById(R.id.actionbar_back))
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						finish();
+
+					}
+				});
+
+		String title = "标题";
+		if (intSign == 1) {
+			title = "俱乐部-发布";
+		} else if (intSign == 2) {
+			title = "俱乐部-参与";
+		}
+		((TextView) findViewById(R.id.actionbar_tv)).setText(title);
+
+		((Button) findViewById(R.id.actionbar_add)).setVisibility(View.GONE);
+
 	}
 
 	/**
@@ -111,7 +129,7 @@ public class ClubFragment extends Fragment {
 				long id) {
 			// 详细信息
 
-		//	showToast("点击了");
+			// showToast("点击了");
 			ClubBean clubBean = (ClubBean) parent.getAdapter()
 					.getItem(position);
 			clickedPost = position;
@@ -119,7 +137,7 @@ public class ClubFragment extends Fragment {
 			intent.setClass(ctx, ClubDetailActivity.class);
 			intent.putExtra("clubId", clubBean.club_id);
 			intent.putExtra("clubTopic", clubBean.topic);
-			intent.putExtra("sign", 1);
+			intent.putExtra("sign", 2);
 			startActivityForResult(intent, 1);
 		}
 
@@ -184,7 +202,7 @@ public class ClubFragment extends Fragment {
 	}
 
 	private void startRetrieval() {
-		getActivity().runOnUiThread(new Runnable() {
+		runOnUiThread(new Runnable() {
 			public void run() {
 				ll_loading.setVisibility(View.VISIBLE);
 				listview.setLoading(true);
@@ -194,7 +212,7 @@ public class ClubFragment extends Fragment {
 	}
 
 	private void finishRetrieval() {
-		getActivity().runOnUiThread(new Runnable() {
+		runOnUiThread(new Runnable() {
 			public void run() {
 				listview.onRefreshComplete();
 				ll_loading.setVisibility(View.GONE);
@@ -208,10 +226,17 @@ public class ClubFragment extends Fragment {
 
 	private void updateData(final int type) {
 
-		getActivity().runOnUiThread(new Runnable() {
+		runOnUiThread(new Runnable() {
 			public void run() {
+				isFirst = false;
 				// 显示 加载更多
 				listview.dispalyFooterView();
+				if (!isFirst && intSign == 2) {
+					list.clear();
+					list.addAll(temp_List);
+					return;
+				}
+
 				if (type == 0 || type == 1) {
 					list.addAll(temp_List);
 					// Log.d(TAG, "list addLast");
@@ -236,6 +261,7 @@ public class ClubFragment extends Fragment {
 	 */
 	private void retrievalClub(final boolean sign, final int clubId,
 			final int type) {
+
 		try {
 			if (listview.getLoading()) {
 				// 正在加载
@@ -244,9 +270,15 @@ public class ClubFragment extends Fragment {
 			// 开始显示
 			startRetrieval();
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("action", "retrievalClub");
-			jsonObject.put("clubId", clubId);
-			jsonObject.put("type", type);
+			if (intSign == 1) {
+				jsonObject.put("action", "retrievalUserClub");
+				jsonObject.put("clubId", clubId);
+				jsonObject.put("type", type);
+
+			} else if (intSign == 2) {
+				jsonObject.put("action", "retrievalEnrollClub");
+			}
+			jsonObject.put("userId", baseInfo.userId);
 
 			Log.d(TAG, "jsonObject=" + jsonObject);
 
@@ -296,7 +328,6 @@ public class ClubFragment extends Fragment {
 					int len = clubArray.length();
 					for (int i = 0; i < len; i++) {
 
-						
 						JSONObject clubObject = clubArray.getJSONObject(i);
 						ClubBean clubBean = new ClubBean();
 						clubBean.club_id = clubObject.getInt("club_id");
@@ -339,7 +370,7 @@ public class ClubFragment extends Fragment {
 	}
 
 	protected void showToast(final String strToast) {
-		getActivity().runOnUiThread(new Runnable() {
+		runOnUiThread(new Runnable() {
 			public void run() {
 				Toast.makeText(ctx, strToast, Toast.LENGTH_SHORT).show();
 			}
