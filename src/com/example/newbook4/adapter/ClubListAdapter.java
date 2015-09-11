@@ -66,7 +66,7 @@ public class ClubListAdapter extends BaseAdapter {
 		}
 		ClubBean clubBean = mList.get(position);
 		holder.title.setText(clubBean.topic);
-		holder.msg.setText(clubBean.getRealAddress());
+		holder.msg.setText(clubBean.getAddress1());
 		holder.time.setText(clubBean.time);
 		
 		holder.num.setText("关注人数:"+clubBean.concern_num+",报名人数:"+clubBean.enroll_num);

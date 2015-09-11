@@ -22,7 +22,7 @@ public class MyApplication extends Application {
 
 	public Typeface popTypeface = null;
 
-	public SimpleDateFormat formatter = new SimpleDateFormat(
+	public static SimpleDateFormat formatter = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
 
 	@Override
@@ -61,7 +61,7 @@ public class MyApplication extends Application {
 		if (TextUtils.isEmpty(SharedPreferencesTool.readStringValue(this,
 				KeyConstant.ip_Address))) {
 			SharedPreferencesTool.writeStringValue(this,
-					KeyConstant.ip_Address, "219.223.233.12");// https://github.com/wangyusheng/NewBook3.git 219.223.238.80
+					KeyConstant.ip_Address, "219.223.238.80");// https://github.com/wangyusheng/NewBook3.git 219.223.238.80
 		}
 
 	}

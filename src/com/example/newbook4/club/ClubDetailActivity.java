@@ -1,25 +1,36 @@
 package com.example.newbook4.club;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.example.newbook4.BaseActivity;
 import com.example.newbook4.R;
@@ -34,7 +45,7 @@ public class ClubDetailActivity extends BaseActivity implements
 		View.OnClickListener {
 	private static final String TAG = "ClubDetailActivity";
 	private TextView actionbar_tv;
-	private TextView content_tv, content_way;
+	private TextView tv_enrollnum, tv_concernnum, content_way;
 	private ClubBean clubBean;
 	private int clubId;
 	private String clubTopic;
@@ -54,6 +65,9 @@ public class ClubDetailActivity extends BaseActivity implements
 	private TextView tv_reload;
 	private Button btn_reload;
 	private boolean isAvailable = true;
+
+	private LinearLayout tag_vessel;
+	private List<String> mTagList = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +89,12 @@ public class ClubDetailActivity extends BaseActivity implements
 	@SuppressLint("ClickableViewAccessibility")
 	private void setupViewComponent() {
 
+		tag_vessel = (LinearLayout) findViewById(R.id.tag_vessel);
+
 		// 设置加号不可见
 		((Button) findViewById(R.id.actionbar_add)).setVisibility(View.GONE);
 		actionbar_tv = (TextView) findViewById(R.id.actionbar_tv);
-		
+
 		actionbar_tv.setText(clubTopic);
 
 		((Button) findViewById(R.id.actionbar_back))
@@ -214,7 +230,8 @@ public class ClubDetailActivity extends BaseActivity implements
 
 		info_type = getResources().getStringArray(R.array.bad_info);
 
-		content_tv = (TextView) findViewById(R.id.content_tv);
+		tv_enrollnum = (TextView) findViewById(R.id.tv_enrollnum);
+		tv_concernnum = (TextView) findViewById(R.id.tv_concernnum);
 
 		content_way = (TextView) findViewById(R.id.content_way);
 		content_way.setTypeface(myApplication.popTypeface);
@@ -315,21 +332,50 @@ public class ClubDetailActivity extends BaseActivity implements
 	private void displayResult() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("举行时间：" + clubBean.time + "\n");
-		sb.append("发布时间：" + clubBean.generate_time + "\n");
-		sb.append("联系方式：" + clubBean.address + "\n");
-		sb.append("推荐书籍：" + clubBean.recommend_book + "\n");
+		sb.append("发布时间：" + clubBean.getTime() + "\n");
+		sb.append("举行地址:" + clubBean.getAddress1() + clubBean.getAddress2()
+				+ "\n");
+		sb.append("联系人：" + clubBean.getContact() + "\n");
+		sb.append("联系电话：" + clubBean.getPhone() + "\n");
 		sb.append("发布者：" + clubBean.user_id);
+		ArrayList<String> books = clubBean.getAllBooks();
+		for (String book : books) {
+			mTagList.add(book);
+			AddTag(book, mTagList.size() - 1);
+		}
 
 		content_way.setText(sb.toString());
 		actionbar_tv.setText(clubBean.topic);
 
-		content_tv.setText(clubBean.enroll_num + "," + clubBean.concern_num
-				+ "," + clubBean.accusation_num);
+		tv_enrollnum.setText(clubBean.enroll_num + "");
+		tv_concernnum.setText(clubBean.concern_num + "");
 
 		// 评论数量
 		// comment_num = (TextView) findViewById(R.id.comment_num);
 		// comment_num.setTypeface(type);
 		// comment_num.setText("123");
+	}
+
+	/**
+	 * 添加标签
+	 * 
+	 * @param tag
+	 * @param i
+	 */
+	@SuppressLint("NewApi")
+	public void AddTag(String tag, int i) {
+		final TextView mTag = new TextView(ctx);
+		mTag.setText("  " + tag + "   ");
+		mTag.setGravity(Gravity.CENTER);
+		mTag.setTextSize(20);
+		mTag.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.mylable));
+		mTag.setTextColor(Color.GRAY);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.setMargins(0, 10, 20, 10);
+		tag_vessel.addView(mTag, i, params);
+
 	}
 
 	private void isOk() {
