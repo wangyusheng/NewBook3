@@ -76,6 +76,8 @@
         <activity android:name=".book.TradeBookAddress" />
         <activity android:name=".book.ReleaseBookSale" />
         <activity android:name=".book.ReleaseBookActivity" />
+        <activity android:name=".book.TradeBookGive" />
+        <activity android:name=".book.TradeBookSale" />
         <activity android:name=".me.MeExBookListActivity" />
         <activity android:name=".me.MeBookActivity" />
         <activity android:name=".me.MeBookDetail" />
@@ -85,9 +87,15 @@
         <activity android:name=".me.AddAddressActivity" />
         <activity android:name=".me.BookExchangeOrderDetial" />
         <activity android:name=".me.BookExchangeOrderFinish" />
+        <activity android:name=".me.MeGiveBookInfosActivity" />
+        <activity android:name=".me.MeGiveBookListActivity" />
+        <activity android:name=".me.BookGiveOrderDetail" />
+        <activity android:name=".me.BookGiveOrderFinish" />
         <activity android:name=".club.ReleaseClubActivity" />
         <activity android:name=".club.ClubDetailActivity" />
          <activity android:name=".club.ClubListActivity" />
+         <activity android:name=".info.ReleaseInfo_buyActivity" />
+         <activity android:name=".info.ReleasePosterActivity" />
         
         
         

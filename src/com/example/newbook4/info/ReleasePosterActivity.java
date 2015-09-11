@@ -140,7 +140,7 @@ View.OnTouchListener {
 
 			
 			VolleyHelper.doPost_JSONObject(jsonObject,
-					NetUtil.getClubBusinessAddress(ctx), requestQueue,
+					NetUtil.getPosterBusinessAddress(ctx), requestQueue,
 					new ResponseCB() {
 
 						@Override

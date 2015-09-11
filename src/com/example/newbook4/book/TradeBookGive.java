@@ -56,7 +56,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class TradeBookGive extends Activity {
-	private static final String TAG = "TradeBookSale";
+	private static final String TAG = "TradeBookGive";
 	private Context ctx;
 	private MyListView listview;// listView对象
 	private LinearLayout ll_loading;// 控制显示正在加载的progress
@@ -163,7 +163,7 @@ public class TradeBookGive extends Activity {
 	}
 
 	private void initViewComponent() {
-		((TextView) findViewById(R.id.actionbar_tv)).setText("2/2：选择地址");
+		((TextView) findViewById(R.id.actionbar_tv)).setText("选择地址");
 
 		ll_loading = (LinearLayout) findViewById(R.id.ll_main_progress);
 		listview = (MyListView) findViewById(R.id.listView);
@@ -237,7 +237,10 @@ public class TradeBookGive extends Activity {
 		listview.setAdapter(adapter);
 
 	}
-
+/**
+ * 加载用户地址:Baseservlet
+ * @param sign
+ */
 	protected void load_Address(final boolean sign) {
 		if (listview.getLoading()) {
 			// 正在加载

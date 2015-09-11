@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btn_ask"
                 android:layout_centerHorizontal="true"
-                android:text="交换"
+                android:text="获得"
                 android:textColor="@color/textcolor_u"
                 android:textSize="10sp" />
         </RelativeLayout>

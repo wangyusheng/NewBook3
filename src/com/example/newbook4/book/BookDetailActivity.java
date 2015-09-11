@@ -435,25 +435,18 @@ public class BookDetailActivity extends BaseActivity implements OnClickListener 
 			// 这个最复杂 先弄
 			intent.setClass(ctx, TradeBookExchange.class);
 			intent.putExtra("BookBean", bookBean);
-			// if(bookBean==null){
-			// showToast("bookBean==null");
-			// }else{
-			// showToast("bookBean!=null");
-			// }
+			
 			startActivityForResult(intent, 0);
 
 		} else if ("赠送".equals(bookBean.transcation)) {
-			showToast("还未完成");
-			// mTabIndicator.get(1).setIconAlpha(0f);
-			// 选择联系地址
-			// intent.setClass(ctx, TradeBookAddress.class);
-			// intent.putExtra("BookBean", bookBean);
-			// startActivity(intent);
+			intent.setClass(ctx,TradeBookGive.class );
+			intent.putExtra("BookBean",bookBean);
+			startActivityForResult(intent, 0);
 
 		} else if ("出售".equals(bookBean.transcation)) {
-			// 这个显示出售人的联系方式
-			showToast("还未完成");
-			// mTabIndicator.get(2).setIconAlpha(0f);
+			intent.setClass(ctx,TradeBookSale.class );
+			intent.putExtra("BookBean",bookBean);
+			startActivityForResult(intent, 0);
 		}
 
 	}

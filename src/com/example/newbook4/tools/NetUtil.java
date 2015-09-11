@@ -56,4 +56,7 @@ public class NetUtil {
 	public static String getInfobuyBusinessAddress(Context ctx){
 		return getRootAddress(ctx)+"infobuyBusiness";
 	}
+	public static String getPosterBusinessAddress(Context ctx){
+		return getRootAddress(ctx)+"posterBusiness";
+	}
 }

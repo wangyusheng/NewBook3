@@ -32,7 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class BookGiveOrderDetail  extends BaseActivity{
-	private static final String TAG = "BookGivechangeOrderDetial";
+	private static final String TAG = "BookGiveOrderDetial";
 	private int book_id;
 
 	private String book_name;

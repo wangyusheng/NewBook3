@@ -57,7 +57,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class TradeBookSale extends Activity {
-	private static final String TAG = "TradeBookAddress";
+	private static final String TAG = "TradeBookSale";
 	private Context ctx;
 	private MyListView listview;// listView对象
 	private LinearLayout ll_loading;// 控制显示正在加载的progress
@@ -79,11 +79,11 @@ public class TradeBookSale extends Activity {
 	private final int UPDATE_DATA = END_RETRIEVAL + 1;
 	private BaseInfo baseInfo;
 
-	private int other_bookId;
-	private String other_bookname;
+	private int release_bookId;
+	private String release_bookname;
 	private int own_bookId;
 
-	private int other_userId;
+	private int release_userId;
 
 	private String own_bookname;
 	private String own_picture;
@@ -130,21 +130,21 @@ public class TradeBookSale extends Activity {
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
-		other_bookId = intent.getIntExtra("other_bookId", -1);
+		release_bookId = intent.getIntExtra("release_bookId", -1);
 		own_bookId = intent.getIntExtra("own_bookId", -1);
 		style = intent.getStringExtra("style");
-		other_userId = intent.getIntExtra("other_userId", -1);
+		release_userId = intent.getIntExtra("release_userId", -1);
 		own_bookname = intent.getStringExtra("own_bookname");
 		own_picture = intent.getStringExtra("own_picture");
 
-		other_bookname = intent.getStringExtra("other_bookname");
-		if (other_bookId == -1) {
+		release_bookname = intent.getStringExtra("release_bookname");
+		if (release_bookId == -1) {
 			finish();
 		}
 		if (own_bookId == -1) {
 			finish();
 		}
-		if (other_userId == -1) {
+		if (release_userId == -1) {
 			finish();
 		}
 
@@ -157,7 +157,7 @@ public class TradeBookSale extends Activity {
 		if (TextUtils.isEmpty(own_picture)) {
 			finish();
 		}
-		if (TextUtils.isEmpty(other_bookname)) {
+		if (TextUtils.isEmpty(release_bookname)) {
 			finish();
 		}
 
@@ -178,7 +178,7 @@ public class TradeBookSale extends Activity {
 	}
 
 	private void initViewComponent() {
-		((TextView) findViewById(R.id.actionbar_tv)).setText("2/2：选择地址");
+		((TextView) findViewById(R.id.actionbar_tv)).setText("选择地址");
 
 		ll_loading = (LinearLayout) findViewById(R.id.ll_main_progress);
 		listview = (MyListView) findViewById(R.id.listView);
@@ -480,16 +480,12 @@ public class TradeBookSale extends Activity {
 		showToast("提交操作");
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("action", "book_exchange_insert");
+		map.put("action", "book_sale_insert");
 		map.put("own_userId", baseInfo.userId + "");
-		map.put("other_bookId", other_bookId + "");
-		map.put("other_userId", other_userId + "");
-		map.put("own_bookId", own_bookId + "");
-		map.put("own_address", str_address);
-		map.put("own_bookname", own_bookname);
-		map.put("own_picture", own_picture);
-		map.put("release_bookname", other_bookname);
-
+		map.put("release_bookId", release_bookId + "");
+		map.put("release_userId", release_userId + "");		
+		map.put("own_address", str_address);		
+		map.put("release_bookname", release_bookname);
 		JSONObject jsonObject = new JSONObject(map);
 		JsonRequest<JSONObject> jsonRequest = new JsonObjectRequest(
 				Method.POST, NetUtil.getBookExchangeAddress(ctx), jsonObject,
@@ -540,9 +536,9 @@ public class TradeBookSale extends Activity {
 				// 发送消息
 				String imAccount = jsonObject.getString("imAccount");
 				JSONObject content = new JSONObject();
-				content.put("action", "exchange_info_reserved");
-				content.put("book_name", other_bookname);
-				content.put("book_id", other_bookId);
+				content.put("action", "sale_info_reserved");
+				content.put("book_name", release_bookname);
+				content.put("book_id", release_bookId);
 
 				ECMessageHelper.sendMessage(baseInfo.im_account, imAccount,
 						content.toString());
